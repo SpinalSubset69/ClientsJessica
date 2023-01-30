@@ -10,8 +10,8 @@ namespace Clients.Core.Interfaces
     public interface IRepository<T> where T : BaseEntity
     {
         Task<T?> GetElementByIdAsync(Guid id);
-        Task<T?> GetElementAsync(Func<Bill, bool>? whereCluasule = null);
-        Task<IEnumerable<T>> GetAllAsync(Func<Bill, bool>? whereCluasule = null);
+        Task<List<T>> GetElementAsync(Func<Bill, bool>? whereCluasule = null);
+        Task<IEnumerable<T>> GetAllAsync();
         void AddElement(T element);
         void RemoveElement(T element);
         Task SaveChangesAsync();

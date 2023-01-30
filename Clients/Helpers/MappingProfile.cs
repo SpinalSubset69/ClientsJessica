@@ -11,6 +11,8 @@ namespace Clients.Helpers
         /// </summary>
         public MappingProfile() {
             CreateMap<Bill, BillsDto>().ReverseMap();
+            CreateMap<CreateBillsDto, Bill>().ReverseMap();
+            CreateMap<Bill, PersonalDataDTO>().ReverseMap();
         }
     }
 }

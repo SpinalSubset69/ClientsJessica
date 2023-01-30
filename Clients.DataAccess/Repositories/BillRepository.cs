@@ -19,18 +19,20 @@ namespace Clients.DataAccess.Repositories
             _context.Add(element);            
         }
 
-        public async Task<IEnumerable<Bill>> GetAllAsync(Func<Bill, bool>? whereCluasule = null)
-        {
-            var query = _context.Bills;
-            if(whereCluasule != null) query.Where(whereCluasule);
-            return await query.ToListAsync();
+        public async Task<IEnumerable<Bill>> GetAllAsync()
+        {            
+            return await _context.Bills.ToListAsync();
         }
 
-        public async Task<Bill?> GetElementAsync(Func<Bill, bool>? whereCluasule = null)
+        public async Task<Bill?> GetByRFCAsync(string RFC)
         {
-            var query = _context.Bills;
-            if (whereCluasule != null) query.Where(whereCluasule);
-            return await query.FirstOrDefaultAsync();
+            return await _context.Bills.Where(x => x.RFC == RFC).FirstOrDefaultAsync();
+        }
+
+        public async Task<List<Bill>> GetElementAsync(Func<Bill, bool> whereCluasule)
+        {
+            var query = await _context.Bills.ToListAsync();           
+            return query.Where(whereCluasule).ToList();
         }
 
         public async Task<Bill?> GetElementByIdAsync(Guid id)

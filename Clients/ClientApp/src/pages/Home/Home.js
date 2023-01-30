@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Container } from 'reactstrap';
 import { useFormik, FormikProvider } from 'formik';
 import { initialValues, validationSchema } from './Home.Data';
@@ -6,112 +6,80 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import { Bills } from '../../api/bills';
-
+import { Backdrop } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
+import { toast, ToastContainer } from 'react-toastify';
+import PersonalData from './PersonalData';
+import AddressData from './AddressData';
 
 export function Home() {
-  const _bills = new Bills();
+  const [isLoading, setIsLoading] = useState(false);
   const formik = useFormik({
     initialValues: initialValues,
     validateOnChange: false,
+    validateOnBlur: true,
     validationSchema: validationSchema,
     onSubmit: async (formValues) => {
       try {
-        console.log(formValues);
-        const data = await _bills.GetBillsAsync();
-        console.log(data);
-
-      } catch (error) {
-        console.error(error);
+        setIsLoading(true);
+        const _bills = new Bills();
+        await _bills.CreateBillAsync(formValues);
+        setIsLoading(false);
+        toast.success("Información Emitida")
+        formik.resetForm({ values: initialValues() });
+      } catch (err) {
+        console.log(err);
+        setIsLoading(false);
+        toast.error("Error en el servidor");
       }
-    }
+    },
   });
 
   return (
-    <Container>
-      <h1>Rellenar Formulario</h1>
-      <FormikProvider value={formik}>
-        <form onSubmit={formik.handleSubmit}>
+    <>
+      <Backdrop
+        sx={{ color: '#9ee5f8', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={isLoading}>
+        <CircularProgress color='inherit' />
+      </Backdrop>
+      <ToastContainer
+        position='bottom-left'
+        closeOnClick
+        hideProgressBar
+        autoClose={3000} />
 
-          <Stack spacing={2}>
-            <Stack spacing={1} direction="row">
-              <TextField
-                inputProps={{ style: { textTransform: 'uppercase' } }}
-                name='RFC'
-                value={formik.values.RFC}
-                onChange={formik.handleChange}
-                error={formik.errors.RFC}
-                helperText={formik.errors.RFC}
-                variant="outlined"
-                label="RFC"
-              />
+      <Container>
+        <h1 className='animate__animated animate__fadeIn'>Rellenar formulario para solicitud de recibo honorarios</h1>
+        <FormikProvider value={formik}>
+          <form className='animate__animated animate__fadeInUp' onSubmit={formik.handleSubmit}>
+            <Stack spacing={2}>
 
-              <TextField
-                inputProps={{ style: { textTransform: 'uppercase' }, maxlength: "18" }}
-                name='CURP'
-                value={formik.values.CURP}
-                onChange={formik.handleChange}
-                error={formik.errors.CURP}
-                helperText={formik.errors.CURP}
-                variant="outlined"
-                label="CURP"
-              />
+              <Stack spacing={1} direction="row" className='reason-container'>
+                <p className='dr__title'>Doctor(a) quién prestó el servicio</p>
+                <TextField
+                  inputProps={{ style: { textTransform: 'capitalize' } }}
+                  name='Reason'
+                  value={formik.values.Reason}
+                  onChange={formik.handleChange}
+                  error={formik.errors.Reason}
+                  helperText={formik.errors.Reason}
+                  variant="outlined"
+                  label="Persona"
+                />
+              </Stack>
 
-              <TextField
-                inputProps={{ style: { textTransform: 'capitalize' } }}
-                name='Name'
-                value={formik.values.Name}
-                onChange={formik.handleChange}
-                error={formik.errors.Name}
-                helperText={formik.errors.Name}
-                variant="outlined"
-                label="Nombres"
-              />
+              <h3>Datos Personales</h3>
+              <PersonalData formik={formik} />
 
-              <TextField
-                inputProps={{ style: { textTransform: 'capitalize' } }}
-                name='LastName'
-                value={formik.values.LastName}
-                onChange={formik.handleChange}
-                error={formik.errors.LastName}
-                helperText={formik.errors.LastName}
-                variant="outlined"
-                label="Apellidos"
-              />
+              <h3>Dirección</h3>
+              <AddressData formik={formik} />
+
+              <Button variant='contained' type='submit'>Enviar solicitud de CFDI</Button>
             </Stack>
+          </form>
+        </FormikProvider>
 
-            <Stack spacing={1} direction="row">
-              <TextField
-                name='Email'
-                value={formik.values.Email}
-                onChange={formik.handleChange}
-                error={formik.errors.Email}
-                helperText={formik.errors.Email}
-                variant="outlined"
-                label="Correo Electrónico"
-              />
-
-              <TextField
-                name='PhoneNumber'
-                inputProps={{
-                  inputMode: 'numeric', pattern: '[0-9]*', onInput: (e) => {
-                    e.target.value = e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
-                  },
-                  maxlength: "10"
-                }}
-                value={formik.values.PhoneNumber}
-                onChange={formik.handleChange}
-                error={formik.errors.PhoneNumber}
-                helperText={formik.errors.PhoneNumber}
-                variant="outlined"
-                label="Número Telefónico"
-              />
-            </Stack>
-
-            <Button variant='contained' type='submit'>Emitir</Button>
-          </Stack>
-        </form>
-      </FormikProvider>
-
-    </Container>
+      </Container>
+    </>
   )
 }

@@ -16,10 +16,15 @@ namespace Clients.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Reason = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RFC = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    CURP = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    CURP = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CP = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Number = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Sector = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {

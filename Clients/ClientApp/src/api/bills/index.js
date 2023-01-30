@@ -10,9 +10,25 @@ export class Bills {
     }
 
 
-    async GetBillsAsync() {
+    async GetPersonalDataByRFCAsync(rfc = "") {
         try {
-            return await axios_instance.get("bills")
+            return await axios_instance.get(`bills?RFC=${rfc}`);
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async GetAllBillsAsync() {
+        try {
+            return await axios_instance.get("bills/all");
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async ValidateAccesAsync(password) {
+        try {
+            return await axios_instance.post("bills/validateaccess?password=" + password);
         } catch (error) {
             throw error;
         }

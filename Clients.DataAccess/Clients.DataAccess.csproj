@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Clients.Core\Clients.Core.csproj" />
+    <ProjectReference Include="..\Clients.Utils\Clients.Utils.csproj" />
   </ItemGroup>
 
 </Project>
