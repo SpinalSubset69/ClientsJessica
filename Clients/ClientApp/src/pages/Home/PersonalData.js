@@ -115,18 +115,6 @@ export default function PersonalData({ formik }) {
                 />
 
                 <TextField
-                    InputLabelProps={{ shrink: formik.values.CURP }}
-                    inputProps={{ style: { textTransform: 'uppercase' }, maxLength: "18" }}
-                    name='CURP'
-                    value={formik.values.CURP}
-                    onChange={formik.handleChange}
-                    error={formik.errors.CURP}
-                    helperText={formik.errors.CURP}
-                    variant="outlined"
-                    label="CURP"
-                />
-
-                <TextField
                     InputLabelProps={{ shrink: formik.values.CFDI }}
                     inputProps={{ style: { textTransform: 'uppercase' }, maxLength: "18" }}
                     name='CFDI'

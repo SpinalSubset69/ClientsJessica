@@ -26,7 +26,7 @@ export function Home() {
         await _bills.CreateBillAsync(formValues);
         setIsLoading(false);
         toast.success("Información Emitida")
-        formik.resetForm({ values: initialValues() });
+        formik.resetForm({ values: initialValues() });        
       } catch (err) {
         console.log(err);
         setIsLoading(false);

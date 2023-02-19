@@ -2,8 +2,7 @@ import * as Yup from 'yup';
 
 export function initialValues() {
     return {
-        RFC: '',
-        CURP: '',
+        RFC: '',        
         Name: '',
         FirstLastName: '',
         SecondLastName: '',
@@ -27,8 +26,7 @@ export function initialValues() {
 
 export function validationSchema() {
     return Yup.object({
-        RFC: Yup.string().min(12, "RFC Inválido").max(13, "RFC Inválido").required("RFC es obligatorio"),
-        CURP: Yup.string().min(18, "CURP Inválido").max(18, "CURP Inválido").required("CURP es obligatorio"),
+        RFC: Yup.string().min(12, "RFC Inválido").max(13, "RFC Inválido").required("RFC es obligatorio"),        
         Name: Yup.string().min(3, "Nombres Inválidos").required("Nombre Requerido"),
         FirstLastName: Yup.string().min(3, "Apellidos Inválidos").required("Apellido Paterno Requeridos"),
         SecondLastName: Yup.string().min(3, "Apellidos Inválidos").required("Apellido Materno Requeridos"),

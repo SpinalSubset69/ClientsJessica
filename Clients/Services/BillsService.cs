@@ -38,7 +38,7 @@ namespace Clients.Services
             var lst = await _billsRepo.GetElementAsync(x => x.Created.Year == yesterday.Year && x.Created.Month == yesterday.Month && x.Created.Date == yesterday.Date);
             var fileName = _excel.CreateExcel(lst.ToList());                        
             var pplToSend = await _mailsRepo.GetAllAsync();
-            var emails = new List<string>() { "alastorlml@gmail.com" }; // pplToSend.Select(x => x.Email).ToList();
+            var emails = pplToSend.Select(x => x.Email).ToList();
             await _email.SendEmail("alastorlml@gmail.com", emails, fileName, _host.ContentRootPath);            
         }
 
